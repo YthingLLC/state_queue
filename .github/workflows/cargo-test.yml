@@ -3,10 +3,10 @@ name: Cargo Test
 on:
   push:
     branches:
-      - devel
+      - master 
   pull_request:
     branches:
-      - devel
+      - master
   workflow_dispatch:
 
 jobs:
