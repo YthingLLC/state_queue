@@ -33,13 +33,17 @@ impl StateOwner {
         StateKeeper { state: self.state.write().unwrap() }
     }
 
-    pub fn check_transactions(&self, state_keeper: &StateKeeper, change_queue: &[StateModifier]) -> bool {
+}
+
+
+impl StateKeeper<'_> {
+    pub fn check_transactions(&self, change_queue: &[StateModifier]) -> bool {
         for modifier in change_queue {
             match modifier {
                 //ReplaceFull will always be valid
                 StateModifier::ReplaceFull(_) => {},
                 StateModifier::ReplaceAt(pos, c) => {
-                    if pos > &state_keeper.state.len() {
+                    if pos > &self.state.len() {
                         return false;
                     }
                     if !c.is_ascii_alphanumeric() {
@@ -51,9 +55,9 @@ impl StateOwner {
         true
     }
 
-    pub fn close_transaction(&self, state_keeper: StateKeeper, change_queue: Vec<StateModifier>) {
+    pub fn close_transaction(self, change_queue: Vec<StateModifier>) {
 
-        let mut state = state_keeper.state;
+        let mut state = self.state;
 
         for modifier in change_queue {
             print!("Applying modifier: ");
@@ -76,9 +80,7 @@ impl StateOwner {
             println!("After: {state}");
         }
     }
-
 }
-
 
 #[derive(Debug)]
 pub enum StateModifier {

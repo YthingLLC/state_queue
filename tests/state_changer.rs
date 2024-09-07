@@ -24,7 +24,7 @@ fn create_and_modify_state_owner() {
 
     //check individually
     for modifier in &modifiers {
-        let is_valid = example.check_transactions(&keeper, std::slice::from_ref(modifier));
+        let is_valid = keeper.check_transactions(std::slice::from_ref(modifier));
         println!("{modifier:?} - Valid? {is_valid}");
 
         assert!(is_valid);
@@ -32,13 +32,13 @@ fn create_and_modify_state_owner() {
 
     //check all at once
 
-    let is_valid = example.check_transactions(&keeper, modifiers.as_slice());
+    let is_valid = keeper.check_transactions(modifiers.as_slice());
 
     println!("All valid in one shot? {is_valid}");
 
     assert!(is_valid);
 
-    example.close_transaction(keeper, modifiers);
+    keeper.close_transaction(modifiers);
 
     println!("Current State? {}", example.get_state());
 
