@@ -1,14 +1,18 @@
+use std::rc::Rc;
+use std::sync::RwLock;
 
 pub struct StateOwner {
-    state: String,
+    state: RwLock<Rc<String>>,
 }
 
 impl StateOwner {
     pub fn new(state: String) -> StateOwner {
-        StateOwner { state }
+        StateOwner { state: RwLock::new(Rc::new(state)) }
     }
 
-    pub fn get_state(&self) -> &str {
-        &self.state
+    pub fn get_state(&self) -> Rc<String> {
+        self.state.read().unwrap().clone()
     }
+
+
 }
