@@ -23,12 +23,7 @@ impl StateOwner {
 
     //WARNING: As this is just a "proof of concept"
     //you can unintentionally cause deadlocks by trying to call
-    //.get_state() before closing out the transaction
-    //WARNING: StateKeeper can not be instantiated outside of this
-    //file as there is no public access to StateKeeper.state; however,
-    //.close_transaction() does not verify that the StateKeeper provided
-    //is the same one that was generated for &self, again, this is a "proof of concept"
-    //and handling this is outside the scope of the concept
+    //keeper.get_state() before closing out the transaction
     pub fn begin_transaction(&self) -> StateKeeper {
         StateKeeper { state: self.state.write().unwrap() }
     }
