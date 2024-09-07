@@ -23,7 +23,7 @@ impl StateOwner {
 
     //WARNING: As this is just a "proof of concept"
     //you can unintentionally cause deadlocks by trying to call
-    //keeper.get_state() before closing out the transaction
+    //.get_state() before closing out the transaction
     pub fn begin_transaction(&self) -> StateKeeper {
         StateKeeper { state: self.state.write().unwrap() }
     }
